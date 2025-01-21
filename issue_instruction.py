@@ -47,4 +47,3 @@ def issue_instruction(instruction, clock, reservation_stations, load_buffers, st
                 register_result_status[instruction.dest] = f"{station_type}{station.id}"  
                 return True
     return False
-

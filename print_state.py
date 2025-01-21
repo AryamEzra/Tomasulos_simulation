@@ -1,7 +1,3 @@
-from issue_instruction import issue_instruction
-from execute import execute_instruction, can_execute
-from write_back import write_result, complete_instruction
-
 def print_state(clock, instructions, reservation_stations, load_buffers, store_buffers, register_result_status):
     print(f"\nClock Cycle: {clock}")
     print("Instruction Status:")

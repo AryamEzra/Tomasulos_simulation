@@ -30,4 +30,3 @@ def can_execute(inst, clock, register_result_status):
         return False
 
     return True
-

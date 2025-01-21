@@ -11,13 +11,30 @@ reservation_stations = init_reservation_stations()
 load_buffers, store_buffers = init_load_store_buffers()
 register_result_status = {f"F{i}": None for i in range(0, 32, 2)}
 
+# instructions = [
+#     Instruction("LD", "F6", "34+R2", None),
+#     Instruction("LD", "F2", "45+R3", None),
+#     Instruction("MULTD", "F0", "F2", "F4"),
+#     Instruction("SUBD", "F8", "F6", "F2"),
+#     Instruction("DIVD", "F10", "F0", "F6"),
+#     Instruction("ADDD", "F6", "F8", "F2")
+# ]
+
 instructions = [
-    Instruction("LD", "F6", "34+R2", None),
-    Instruction("LD", "F2", "45+R3", None),
-    Instruction("MULTD", "F0", "F2", "F4"),
-    Instruction("SUBD", "F8", "F6", "F2"),
-    Instruction("DIVD", "F10", "F0", "F6"),
-    Instruction("ADDD", "F6", "F8", "F2")
+    Instruction("LD", "F2", "0+Rx", None),
+    Instruction("LD", "F6", "8+Ry", None),
+    Instruction("MULTD", "F2", "F0", "F2"),
+    Instruction("MULTD", "F6", "F12", "F6"),
+    Instruction("DIVD", "F8", "F2", "F0"),
+    Instruction("DIVD", "F16", "F6", "F12"),
+    Instruction("LD", "F4", "32+Rx", None),
+    Instruction("LD", "F14", "40+Ry", None),
+    Instruction("ADDD", "F4", "F0", "F4"),
+    Instruction("ADDD", "F14", "F12", "F14"),
+    Instruction("ADDD", "F10", "F8", "F2"),
+    Instruction("ADDD", "F18", "F16", "F6"),
+    Instruction("SD", "F4", "0+Rx", None),
+    Instruction("SD", "F14", "8+Ry", None)
 ]
 
 LATENCIES = {

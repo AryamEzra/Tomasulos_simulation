@@ -1,11 +1,10 @@
-from issue_instruction import issue_instruction
-from execute import execute_instruction, can_execute
-
 def write_result(instruction, clock, reservation_stations, load_buffers, store_buffers, register_result_status, instructions):
-    if instruction.status == "executing" and clock == instruction.execute_end + 1:  
-        instruction.write_result = clock  
+    # Ensure the write stage occurs in the cycle after execution ends
+    if instruction.status == "executing" and (clock == instruction.execute_end + 1 or clock > instruction.execute_end + 1):
+        instruction.write_result = clock
         instruction.status = "writing"
 
+        # Free the load/store buffer if LD/SD
         if instruction.op == "LD":
             for buffer in load_buffers:
                 if buffer.busy and buffer.address == instruction.src1:
@@ -13,6 +12,14 @@ def write_result(instruction, clock, reservation_stations, load_buffers, store_b
                     buffer.address = None
                     break
 
+        elif instruction.op == "SD":
+            for buffer in store_buffers:
+                if buffer.busy and buffer.address == instruction.src1:
+                    buffer.busy = False
+                    buffer.address = None
+                    break
+
+        # Free reservation stations for non-LD/SD instructions
         elif instruction.op not in ["LD", "SD"]:
             station_type = "Add" if instruction.op in ["ADDD", "SUBD"] else "Mul"
             for station in reservation_stations[station_type]:
@@ -22,12 +29,16 @@ def write_result(instruction, clock, reservation_stations, load_buffers, store_b
                     station.dest = None
                     station.src1 = None
                     station.src2 = None
+                    station.execute_start = None
+                    station.execute_end = None
                     break
 
+        # Free the destination register
         register_result_status[instruction.dest] = None
 
         return True
     return False
+
 
 
 def complete_instruction(inst, clock, reservation_stations, load_buffers, store_buffers, register_result_status):
@@ -76,4 +87,3 @@ def complete_instruction(inst, clock, reservation_stations, load_buffers, store_
                 buffer.busy = False
                 buffer.address = None
                 break
-
