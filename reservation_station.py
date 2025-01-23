@@ -1,12 +1,14 @@
 class ReservationStation:
     def __init__(self, station_type, id):
-        self.type = station_type  
-        self.id = id              
-        self.busy = False         
-        self.op = None            
-        self.dest = None          
-        self.src1 = None          
-        self.src2 = None          
+        self.type = station_type
+        self.id = id
+        self.busy = False
+        self.op = None
+        self.dest = None
+        self.src1 = None
+        self.src2 = None
+        self.temp1 = None  # Hold value for src1
+        self.temp2 = None 
         
         
 

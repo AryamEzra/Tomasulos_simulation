@@ -1,3 +1,5 @@
+# print_state.py
+
 def print_state(clock, instructions, reservation_stations, load_buffers, store_buffers, register_result_status):
     print(f"\nClock Cycle: {clock}")
     print("Instruction Status:")
@@ -10,16 +12,19 @@ def print_state(clock, instructions, reservation_stations, load_buffers, store_b
         print(f"{inst.op:<10} {issue:<5} {execute_start:<15} {execute_end:<12} {write_result:<12}")
 
     print("\nReservation Stations:")
-    print(f"{'Type':<5} {'ID':<2} {'Busy':<5} {'Op':<6} {'Dest':<5} {'Src1':<5} {'Src2':<5} ")
+    print(f"{'Type':<5} {'ID':<2} {'Busy':<5} {'Op':<6} {'Dest':<5} {'Src1':<5} {'temp1':<5} {'Src2':<5} {'temp2':<5}")
     for station_type, stations in reservation_stations.items():
         for station in stations:
             op = station.op if station.op is not None else "-"
             dest = station.dest if station.dest is not None else "-"
             src1 = station.src1 if station.src1 is not None else "-"
             src2 = station.src2 if station.src2 is not None else "-"
+            temp1 = station.temp1 if station.temp1 is not None else "-"
+            temp2 = station.temp2 if station.temp2 is not None else "-"
             
-            print(f"{station.type:<5} {station.id:<2} {station.busy:<5} {op:<6} {dest:<5} {src1:<5} {src2:<5} ")
-    
+            print(f"{station.type:<5} {station.id:<2} {station.busy:<5} {op:<6} {dest:<5} {src1:<5} {temp1:<5} {src2:<5} {temp2:<5}")
+
+
     print("\nLoad Buffers:")
     print(f"{'ID':<2} {'Busy':<5} {'Address':<10}")
     for buffer in load_buffers:

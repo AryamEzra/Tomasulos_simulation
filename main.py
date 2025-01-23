@@ -60,8 +60,8 @@ while any(inst.status not in ["completed", "writing"] for inst in instructions):
             instruction_pointer += 1
                 
     for inst in instructions:
-        if inst.status == "issued" and can_execute(inst, clock, register_result_status):
-            execute_instruction(inst, clock, register_result_status)
+        if inst.status == "issued" and can_execute(inst, clock, register_result_status, reservation_stations):
+            execute_instruction(inst, clock, register_result_status, reservation_stations)
         elif inst.status == "executing":
             write_result(inst, clock, reservation_stations, load_buffers, store_buffers, register_result_status, instructions)
         elif inst.status == "writing":
