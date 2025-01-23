@@ -49,15 +49,18 @@ LATENCIES = {
 
 user_choice = input("Would you like to proceed step-by-step (s) or run the simulation to completion (c)? ")
 
+clock = 1
+instruction_pointer = 0  # Initialize instruction pointer
 
-clock = 1  
 while any(inst.status not in ["completed", "writing"] for inst in instructions):
+    if instruction_pointer < len(instructions) and instructions[instruction_pointer].status == "waiting":
+            
+        issued = issue_instruction(instructions[instruction_pointer], clock, reservation_stations, load_buffers, store_buffers, register_result_status)
+        if issued:
+            instruction_pointer += 1
+                
     for inst in instructions:
-        if inst.status == "waiting":
-            issued = issue_instruction(inst, clock, reservation_stations, load_buffers, store_buffers, register_result_status)
-            if issued:
-                break  
-        elif inst.status == "issued" and can_execute(inst, clock, register_result_status):
+        if inst.status == "issued" and can_execute(inst, clock, register_result_status):
             execute_instruction(inst, clock, register_result_status)
         elif inst.status == "executing":
             write_result(inst, clock, reservation_stations, load_buffers, store_buffers, register_result_status, instructions)
